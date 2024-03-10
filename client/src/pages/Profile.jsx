@@ -17,7 +17,7 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUser({ userId: user._id, data: formData }));
-   
+
     setIsEditing(false);
   };
 
@@ -32,11 +32,7 @@ const Profile = () => {
       <div className="border-b-2 block md:flex">
         <div className="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
           <div className="flex justify-between items-center">
-            <span className="text-xl font-semibold block">
-              {user.role === "customer"
-                ? "Customer Profile"
-                : "Service Provider Profile"}
-            </span>
+            <span className="text-xl font-semibold ml-10 block">Profile</span>
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}

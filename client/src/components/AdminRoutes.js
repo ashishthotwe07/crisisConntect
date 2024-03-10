@@ -9,7 +9,7 @@ const AdminRoute = ({ children }) => {
   let location = useLocation();
 
 
-  if (user.role === "customer") {
+  if (user.role === "user") {
     
     return <Navigate to="/dashboard/profile" state={{ from: location }} replace />;
   }

@@ -2,21 +2,13 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthSelector, logoutUser } from "../redux/reducers/authSlice";
-import {
-  FiMenu,
-  FiHome,
-  FiLayout,
-  FiInbox,
-  FiUsers,
-  FiShoppingBag,
-  FiLogIn,
-  FiUserPlus,
-} from "react-icons/fi";
+import { FiMenu, FiHome, FiLogIn } from "react-icons/fi";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { user } = useSelector(AuthSelector);
+  console.log(user);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -70,32 +62,7 @@ const Dashboard = () => {
                   <span className="ms-3">Profile</span>
                 </a>
               </li>
-              {user.role === "customer" && (
-                <li>
-                  <a
-                    href="/dashboard/products"
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  >
-                    <FiShoppingBag className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                    <span className="flex-1 ms-3 whitespace-nowrap">
-                      Products
-                    </span>
-                  </a>
-                </li>
-              )}
-              {user.role === "service_provider" && (
-                <li>
-                  <a
-                    href="/dashboard/service"
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  >
-                    <FiUsers className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                    <span className="flex-1 ms-3 whitespace-nowrap">
-                      Service Requests
-                    </span>
-                  </a>
-                </li>
-              )}
+
               <li>
                 <button
                   onClick={handleSignout}
