@@ -1,38 +1,46 @@
-// Import required modules
 import express from "express";
+import http from "http";
+import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import session from "express-session";
 import connectDB from "./config/db.js";
 import AuthRouter from "./routes/auth.routes.js";
-import passport from "passport";
+import EmergencyRoutes from "./routes/emergency.routes.js";
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Create an Express application
 const app = express();
+const server = http.createServer(app);
+export const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 connectDB();
-// Middleware for CORS
-app.use(cors());
-// Use cookie-parser middleware
-app.use(cookieParser());
 
-// Middleware for parsing JSON bodies
+app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
-// Homepage route
 app.get("/", (req, res) => {
   res.send("Welcome to the homepage!");
 });
 
-// API route for authentication
 app.use("/api/auth", AuthRouter);
+app.use("/api/emergency", EmergencyRoutes);
 
-// Start the server
+io.on("connection", (socket) => {
+  console.log("A client connected");
+  // Add Socket.IO event handlers here
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

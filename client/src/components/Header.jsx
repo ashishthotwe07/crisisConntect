@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { AuthSelector } from "../redux/reducers/authSlice";
 import { Link } from "react-router-dom";
+import { FaBell } from "react-icons/fa";
+import { NotificationSelector } from "../redux/reducers/notificationSlice"; // Import NotificationSelector correctly
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector(AuthSelector);
+  const { newNoty } = useSelector(NotificationSelector);
+
+  console.log(newNoty);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,24 +23,23 @@ export default function Header() {
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link to={"/"} className="flex items-center">
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                Ashkings
+                CrisisConnect
               </span>
             </Link>
             <div className="flex items-center lg:order-2">
               {user ? (
                 <Link to={"/dashboard/profile"}>
-                  <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                  <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                     <svg
-                      class="absolute w-12 h-12 text-gray-400 -left-1"
+                      className="absolute w-12 h-12 text-gray-400 -left-1"
                       fill="currentColor"
-                      cursor={"pointer"}
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       ></path>
                     </svg>
                   </div>
@@ -99,40 +103,46 @@ export default function Header() {
                 {user && (
                   <>
                     <li>
-                      <Link className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">
-                        Company
+                      <Link
+                        to={"/about"}
+                        className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                      >
+                        About us
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to={"/marketplace"}
+                        to={"/report-emergency"}
                         className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
                       >
-                        Marketplace
+                        Report Emergency
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to={"/features"}
+                        to={"/volunteer-network"}
                         className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
                       >
-                        Features
+                        Volunteer Network
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to={"/team"}
+                        to={"/emergency-resources"}
                         className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
                       >
-                        Team
+                        Emergency Resources
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to={"/contact"}
-                        className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                        to={"/notifications"}
+                        className="block py-2 relative pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
                       >
-                        Contact
+                        Notifications
+                        {newNoty && (
+                          <div class="absolute inline-flex items-center justify-center w-3 h-3 text-xs  -top-2 font-bold text-white  border-white rounded-full bg-red-500 ml-1 dark:border-gray-900"></div>
+                        )}
                       </Link>
                     </li>
                   </>

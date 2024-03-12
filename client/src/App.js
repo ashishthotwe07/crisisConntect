@@ -11,12 +11,18 @@ import Profile from "./pages/Profile";
 import Products from "./pages/Products";
 import Services from "./pages/Services";
 import AdminRoute from "./components/AdminRoutes";
+import About from "./pages/About";
+import ReportEmergency from "./pages/ReportEmergency";
+import Notification from "./pages/Notification";
 
 export default function App() {
   const routes = createBrowserRouter([
     { path: "/", element: <Home /> },
     { path: "/register", element: <SignUp /> },
     { path: "/login", element: <SignIn /> },
+    { path: "/about", element: <About /> },
+    { path: "/report-emergency", element: <ReportEmergency /> },
+    { path: "/notifications", element: <Notification /> },
 
     {
       path: "/dashboard",
