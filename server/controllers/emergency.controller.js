@@ -1,6 +1,6 @@
 import EmergencyReport from "../models/emergency.model.js";
 import transporter from "../config/nodemailer.js";
-import Volunteer from "../models/volunteer.model.js";
+import User from "../models/user.model.js";
 import { io } from "../server.js";
 class EmergencyController {
   async createEmergencyReport(req, res) {
@@ -18,14 +18,14 @@ class EmergencyController {
         phone: phone,
         address: address,
         status: "reported",
-        user: req.user._id, // Assuming you have access to the authenticated user's ID
+        user: req.user._id, 
       });
 
       // Save the new emergency report to the database
       const savedEmergencyReport = await newEmergencyReport.save();
 
       // Match emergency type with volunteer skills
-      const matchingVolunteers = await Volunteer.find({
+      const matchingVolunteers = await User.find({
         skills_qualifications: type, // Query volunteers whose skills match the emergency type
       });
 
@@ -57,19 +57,21 @@ class EmergencyController {
     }
   }
 
-  // Action to retrieve all emergency reports
-  async getAllEmergencyReports(req, res) {
-    try {
-      // Fetch all emergency reports from the database
-      const emergencyReports = await EmergencyReport.find();
+// Action to retrieve all emergency reports excluding the ones reported by the current user
+async getAllEmergencyReports(req, res) {
+  try {
+    const currentUserId = req.user._id; // Assuming you have access to the authenticated user's ID
 
-      // Send the fetched emergency reports as a response
-      res.status(200).json({ success: true, data: emergencyReports });
-    } catch (error) {
-      console.error("Error retrieving all emergency reports:", error);
-      res.status(500).json({ success: false, error: "Internal Server Error" });
-    }
+  const emergencyReports = await EmergencyReport.find({ user: { $ne: currentUserId } });
+
+    // Send the fetched emergency reports as a response
+    res.status(200).json({ success: true, data: emergencyReports });
+  } catch (error) {
+    console.error("Error retrieving all emergency reports:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
+}
+
   // Action to retrieve a specific emergency report by its ID
   async getEmergencyReportById(req, res) {
     try {
@@ -105,7 +107,7 @@ async function sendEmailToVolunteer(volunteer, emergencyReport) {
   // Construct email message
   const mailOptions = {
     from: process.env.USER_EMAIL,
-    to: volunteer.contact_information,
+    to: volunteer.email,
     subject: "Emergency Report Notification",
     text: `Dear ${volunteer.user},\n\nA new emergency report of type "${emergencyReport.type}" has been reported at ${emergencyReport.address}.\n\nDetails: ${emergencyReport.details}\n\nPlease take necessary action.\n\nRegards,\nCrisisConnect Team`,
   };

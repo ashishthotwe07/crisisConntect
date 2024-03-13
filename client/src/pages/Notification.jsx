@@ -24,7 +24,7 @@ const Notification = () => {
 
   useEffect(() => {
     dispatch(setCountZero());
-  }, []);
+  });
 
   // Filter out notifications that match the user's ID
   const filteredNotifications = notifications.filter(

@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import AuthRouter from "./routes/auth.routes.js";
 import EmergencyRoutes from "./routes/emergency.routes.js";
+import volunteerRoutes from "./routes/volunteer.routes.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", AuthRouter);
 app.use("/api/emergency", EmergencyRoutes);
+app.use("/api/volunteer", volunteerRoutes);
 
 io.on("connection", (socket) => {
   console.log("A client connected");

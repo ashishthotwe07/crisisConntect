@@ -69,11 +69,11 @@ export const updateUser = createAsyncThunk(
   async ({ userId, data }, thunkAPI) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/auth/update-user/${userId}`, // Assuming the API endpoint for updating user data
+        `http://localhost:3000/api/auth/update-user/${userId}`,
         data, // Data to be updated
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -104,6 +104,31 @@ export const deleteUser = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response.data.message || "Deletion failed"
+      );
+    }
+  }
+);
+
+export const BecomeVolunteer = createAsyncThunk(
+  "volunteer/create",
+  async (role, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+      const response = await axios.post(
+        "http://localhost:3000/api/volunteer/create",
+        role,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.user;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(
+        error.response.data.message || "Internal server error "
       );
     }
   }
@@ -162,6 +187,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         console.log("User updated:", action.payload);
       })
+
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
@@ -179,6 +205,11 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         console.error("Failed to delete user:", action.payload);
+      })
+      .addCase(BecomeVolunteer.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        console.log("User updated:", action.payload);
       });
   },
 });

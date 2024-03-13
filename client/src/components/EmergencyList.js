@@ -9,22 +9,34 @@ const EmergencyList = () => {
     // Fetch initial emergency reports
     fetchEmergencyReports();
   }, []);
-
   const fetchEmergencyReports = async () => {
     try {
-      // Fetch initial emergency reports using API
+      const token = localStorage.getItem("token");
+  
+      // Set headers with the token
+      const headers = {
+        "Authorization": `Bearer ${token}`,
+      };
+  
+      // Fetch initial emergency reports using API with token in headers
       const response = await fetch(
-        "http://localhost:3000/api/emergency/reports"
+        "http://localhost:3000/api/emergency/reports",
+        {
+          headers: headers,
+        }
       );
+  
       if (!response.ok) {
         throw new Error("Failed to fetch emergency reports");
       }
+  
       const data = await response.json();
       setEmergencyReports(data.data);
     } catch (error) {
       toast.error(error.message);
     }
   };
+  
 
   const filteredReports = emergencyReports.filter(
     (report) => report.status !== "resolved"

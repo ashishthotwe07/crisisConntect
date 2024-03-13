@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/report", verifyToken, EmergencyController.createEmergencyReport);
 
 // Route to retrieve all emergency reports
-router.get("/reports", EmergencyController.getAllEmergencyReports);
+router.get("/reports", verifyToken, EmergencyController.getAllEmergencyReports);
 
 // Route to retrieve a specific emergency report by its ID
 router.get("/reports/:id", EmergencyController.getEmergencyReportById);

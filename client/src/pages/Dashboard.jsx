@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthSelector, logoutUser } from "../redux/reducers/authSlice";
-import { FiMenu, FiHome, FiLogIn } from "react-icons/fi";
+import { FiMenu, FiHome, FiSettings, FiBell, FiLogOut } from "react-icons/fi";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { user } = useSelector(AuthSelector);
-  console.log(user);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +52,32 @@ const Dashboard = () => {
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
+              {user && user.role === "volunteer" && (
+                <>
+                  <li>
+                    <a
+                      href="/dashboard/volunteer"
+                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                      <FiHome className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                      <span className="ms-3">Volunteer Dashboard</span>
+                    </a>
+                  </li>
+                </>
+              )}
+              {user && user.role === "customer" && (
+                <>
+                  <li>
+                    <a
+                      href="/dashboard/reports"
+                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                      <FiHome className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                      <span className="ms-3">Reported Emergencies</span>
+                    </a>
+                  </li>
+                </>
+              )}
               <li>
                 <a
                   href="/dashboard/profile"
@@ -64,11 +89,20 @@ const Dashboard = () => {
               </li>
 
               <li>
+                <a
+                  href="/dashboard/settings"
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                >
+                  <FiSettings className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                  <span className="ms-3">Settings</span>
+                </a>
+              </li>
+              <li>
                 <button
                   onClick={handleSignout}
                   className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
-                  <FiLogIn className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                  <FiLogOut className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                   <span className="flex-1 ms-3 whitespace-nowrap">
                     Sign out
                   </span>

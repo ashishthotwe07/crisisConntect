@@ -33,6 +33,13 @@ const userSchema = new Schema(
       enum: ["user", "volunteer", "admin"],
       default: "user",
     },
+
+    skills_qualifications: {
+      type: String,
+    },
+    availability: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

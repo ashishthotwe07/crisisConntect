@@ -23,16 +23,21 @@ const formatDate = (timestamp) => {
 const EmergencyCard = ({ emergency }) => {
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md p-4">
+      <img
+        className="cursor-pointer"
+        src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFwfGVufDB8fDB8fHww"
+        alt=""
+      />
       <div className="mt-4">
         <div className="">
           <h5 className="text-lg font-semibold text-gray-900">
             {emergency.type}
           </h5>
-          <p className="text-sm font-semibold mt-3 text-gray-700">
+          <p className="text-sm font-semibold mt-5 text-gray-700">
             {emergency.details}
           </p>
         </div>
-        <div className="flex justify-between mt-10">
+        <div className="flex justify-between mt-5">
           <p className="mt-1 text-sm text-gray-700 font-semibold w-40">
             <FaMapMarkerAlt className="inline " /> {emergency.address}
           </p>

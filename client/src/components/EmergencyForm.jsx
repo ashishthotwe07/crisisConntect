@@ -75,8 +75,6 @@ const EmergencyReportForm = () => {
         longitude: null,
       });
 
-      // Log the response if needed
-      const data = await response.json();
       toast.success("Emergency Reported Successfully");
     } catch (error) {
       toast.error(error);

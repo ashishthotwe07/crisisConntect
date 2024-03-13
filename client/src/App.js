@@ -14,6 +14,9 @@ import AdminRoute from "./components/AdminRoutes";
 import About from "./pages/About";
 import ReportEmergency from "./pages/ReportEmergency";
 import Notification from "./pages/Notification";
+import Volunteer from "./pages/Volunteer";
+import MyReports from "./pages/MyReports";
+import VolunteerNetwork from "./pages/VolunteerNetwork";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -23,6 +26,8 @@ export default function App() {
     { path: "/about", element: <About /> },
     { path: "/report-emergency", element: <ReportEmergency /> },
     { path: "/notifications", element: <Notification /> },
+    { path: "/volunteer/apply", element: <Volunteer /> },
+    { path: "/volunteer-network", element: <VolunteerNetwork /> },
 
     {
       path: "/dashboard",
@@ -30,7 +35,15 @@ export default function App() {
       children: [
         { path: "profile", element: <Profile /> },
         { path: "products", element: <Products /> },
-        { path: "services", element:<AdminRoute><Services /></AdminRoute>  },
+        { path: "reports", element: <MyReports /> },
+        {
+          path: "services",
+          element: (
+            <AdminRoute>
+              <Services />
+            </AdminRoute>
+          ),
+        },
       ],
     },
   ]);

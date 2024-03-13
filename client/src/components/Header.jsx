@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { AuthSelector } from "../redux/reducers/authSlice";
 import { Link } from "react-router-dom";
-import { FaBell } from "react-icons/fa";
 import { NotificationSelector } from "../redux/reducers/notificationSlice"; // Import NotificationSelector correctly
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector(AuthSelector);
   const { newNoty } = useSelector(NotificationSelector);
-
-  console.log(newNoty);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
