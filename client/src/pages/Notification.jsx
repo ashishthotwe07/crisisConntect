@@ -11,7 +11,8 @@ import { AuthSelector } from "../redux/reducers/authSlice";
 const Notification = () => {
   const { notifications } = useSelector(NotificationSelector);
   const { user } = useSelector(AuthSelector);
-  console.log(user);
+  
+  console.log(user._id);
   console.log(notifications);
   const { message } = notifications;
   console.log(message);
@@ -28,9 +29,11 @@ const Notification = () => {
 
   // Filter out notifications that match the user's ID
   const filteredNotifications = notifications.filter(
+ 
     (notification) => notification.user !== user._id
   );
 
+  
   return (
     <Layout>
       <div className="md:w-1/2 mx-auto p-8 bg-white shadow-md rounded-md">

@@ -12,12 +12,12 @@ const EmergencyList = () => {
   const fetchEmergencyReports = async () => {
     try {
       const token = localStorage.getItem("token");
-  
+
       // Set headers with the token
       const headers = {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       };
-  
+
       // Fetch initial emergency reports using API with token in headers
       const response = await fetch(
         "http://localhost:3000/api/emergency/reports",
@@ -25,18 +25,17 @@ const EmergencyList = () => {
           headers: headers,
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to fetch emergency reports");
       }
-  
+
       const data = await response.json();
       setEmergencyReports(data.data);
     } catch (error) {
       toast.error(error.message);
     }
   };
-  
 
   const filteredReports = emergencyReports.filter(
     (report) => report.status !== "resolved"
@@ -59,28 +58,19 @@ const EmergencyList = () => {
 
   return (
     <div className="w-2/3 m-auto">
-      <h1 className="text-2xl font-bold text-center m-10 mb-4">
-        Recent Emergency Reports
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredReports.reverse().map((report) => (
-          <EmergencyCard key={report._id} emergency={report} />
-        ))}
-      </div>
-
-      {/* Display reports whose time is greater than 1 day */}
-      {resolvedReports.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-xl text-center  font-semibold mb-4">
-            Unresolved Reports
-          </h2>
+      {filteredReports.length > 0 && (
+        <>
+          <h1 className="text-2xl font-bold text-center m-10 mb-4">
+            Recent Emergency Reports
+          </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {greaterThanOneDayReports.map((report) => (
+            {filteredReports.reverse().map((report) => (
               <EmergencyCard key={report._id} emergency={report} />
             ))}
           </div>
-        </div>
+        </>
       )}
+
       {resolvedReports.length > 0 && (
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4 text-center">

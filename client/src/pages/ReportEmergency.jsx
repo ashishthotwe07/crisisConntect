@@ -20,7 +20,8 @@ export default function ReportEmergency() {
               <div className="h-full pr-6">
                 <p className="mt-3 mb-12 text-lg text-gray-600 dark:text-slate-400">
                   In case of an emergency, please fill out the form below to
-                  report the incident. If you require immediate assistance, please contact emergency services.
+                  report the incident. If you require immediate assistance,
+                  please contact emergency services.
                 </p>
                 <ul className="mb-6 md:mb-0">
                   <li className="flex">
@@ -48,7 +49,11 @@ export default function ReportEmergency() {
                         Nearby Volunteers
                       </h3>
                       <p className="text-gray-600 dark:text-slate-400">
-                        Connect with <a href="/volunteers" className="text-blue-500">volunteers</a> in your area who are ready to assist during emergencies.
+                        Connect with{" "}
+                        <a href="/volunteers" className="text-blue-500">
+                          volunteers
+                        </a>{" "}
+                        in your area who are ready to assist during emergencies.
                       </p>
                     </div>
                   </li>
@@ -61,7 +66,11 @@ export default function ReportEmergency() {
                         Emergency Resources
                       </h3>
                       <p className="text-gray-600 dark:text-slate-400">
-                        Find more <a href="/resources" className="text-blue-500">emergency resources</a> and information.
+                        Find more{" "}
+                        <a href="/resources" className="text-blue-500">
+                          emergency resources
+                        </a>{" "}
+                        and information.
                       </p>
                     </div>
                   </li>

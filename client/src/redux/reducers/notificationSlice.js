@@ -37,6 +37,11 @@ socket.on("newEmergencyReport", (notification) => {
   store.dispatch(notificationSlice.actions.receiveNotification(notification));
 });
 
+// Listen for 'newEmergencyReport' event and dispatch receiveNotification action
+socket.on("updatedNotification", (notification) => {
+  store.dispatch(notificationSlice.actions.receiveNotification(notification));
+});
+
 export const { receiveNotification, clearAllNotifications, setCountZero } =
   notificationSlice.actions;
 

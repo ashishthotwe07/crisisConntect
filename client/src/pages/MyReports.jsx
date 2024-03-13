@@ -1,62 +1,86 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const MyReports = () => {
-  // Customize list items with your app's specific data
-  const listItems = [
-    {
-      title: "Report 1",
-      description: "Details of Report 1",
-      status: "Approved",
-    },
-    {
-      title: "Report 2",
-      description: "Details of Report 2",
-      status: "Pending",
-    },
-    {
-      title: "Report 3",
-      description: "Details of Report 3",
-      status: "Rejected",
-    },
-  ];
+  const [reports, setReports] = useState([]);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        // Fetch data from your API endpoint
+        const response = await fetch(
+          "http://localhost:3000/api/emergency/users/reports",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // Get token from localStorage
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch reports");
+        }
+        const data = await response.json();
+
+        setReports(data.data);
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      }
+    };
+
+    fetchReports();
+  }, []);
 
   return (
     <div className="container mx-auto mt-8">
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {listItems.map((item, index) => (
-          <ListItem key={index} {...item} />
+        {reports.map((report, index) => (
+          <ListItem key={index} {...report} />
         ))}
       </ul>
     </div>
   );
 };
 
-const ListItem = ({ title, description, status }) => {
+const ListItem = ({ _id, type, address, status }) => {
+  const handleResolveClick = async () => {
+    try {
+      // Send PUT request to update report status
+      const response = await fetch(
+        `http://localhost:3000/api/emergency/reports/${_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            status: status === "resolved" ? "Reported" : "resolved",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update report status");
+      }
+    } catch (error) {
+      console.error("Error updating report status:", error);
+    }
+  };
+
   return (
     <li className="border border-gray-200 rounded-md shadow-md">
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        <p className="mt-2 text-sm text-gray-600">{description}</p>
-        <p className="mt-2 text-sm font-medium">
-          Status:{" "}
-          <span
-            className={`text-${
-              status === "Approved"
-                ? "green"
-                : status === "Pending"
-                ? "yellow"
-                : "red"
-            }-600`}
-          >
-            {status}
-          </span>
-        </p>
-        <a
-          href="#"
-          className="block mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+        <h3 className="text-lg font-bold text-gray-900">{type}</h3>
+        <p className="mt-2 text-sm text-gray-600">{address}</p>
+        <button
+          onClick={handleResolveClick}
+          className={`block mt-4 text-sm font-medium ${
+            status === "resolved"
+              ? "text-red-600 hover:text-indigo-500"
+              : "text-green-600 hover:text-indigo-500"
+          }`}
         >
-         Mark As Resolved
-        </a>
+          {status === "resolved" ? "Mark As Unresolved" : "Mark As Resolved"}
+        </button>
       </div>
     </li>
   );
