@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import EmergencyCard from "./EmergencyCard";
+import { io } from "socket.io-client";
 
 const EmergencyList = () => {
   const [emergencyReports, setEmergencyReports] = useState([]);
+
+  const socket = io("http://localhost:3000");
 
   useEffect(() => {
     // Fetch initial emergency reports
@@ -56,6 +59,14 @@ const EmergencyList = () => {
   // Sort the filtered reports by timestamp in descending order
   filteredReports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
+  socket.on("newEmergencyReport", (notification) => {
+    fetchEmergencyReports();
+  });
+
+
+  socket.on("updatedNotification", (notification) => {
+    fetchEmergencyReports();
+  });
   return (
     <div className="w-2/3 m-auto">
       {filteredReports.length > 0 && (

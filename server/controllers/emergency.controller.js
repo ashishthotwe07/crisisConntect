@@ -123,7 +123,7 @@ class EmergencyController {
       const notificationMessage = {
         user: req.user._id,
 
-        message: `The ${updatedReport.type} emergency has been updated resolved".`,
+        message: `The ${updatedReport.type} emergency has been updated to ${updatedReport.status}".`,
       };
       io.emit("updatedNotification", notificationMessage);
 

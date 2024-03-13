@@ -11,11 +11,9 @@ import { AuthSelector } from "../redux/reducers/authSlice";
 const Notification = () => {
   const { notifications } = useSelector(NotificationSelector);
   const { user } = useSelector(AuthSelector);
-  
-  console.log(user._id);
-  console.log(notifications);
+
   const { message } = notifications;
-  console.log(message);
+ 
   const dispatch = useDispatch();
 
   const handleClearAll = () => {

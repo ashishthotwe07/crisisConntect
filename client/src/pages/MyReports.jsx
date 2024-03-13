@@ -1,33 +1,39 @@
 import React, { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 
 const MyReports = () => {
+  const socket = io("http://localhost:3000");
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        // Fetch data from your API endpoint
-        const response = await fetch(
-          "http://localhost:3000/api/emergency/users/reports",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // Get token from localStorage
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch reports");
-        }
-        const data = await response.json();
-
-        setReports(data.data);
-      } catch (error) {
-        console.error("Error fetching reports:", error);
-      }
-    };
-
     fetchReports();
   }, []);
+
+  const fetchReports = async () => {
+    try {
+      // Fetch data from your API endpoint
+      const response = await fetch(
+        "http://localhost:3000/api/emergency/users/reports",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Get token from localStorage
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch reports");
+      }
+      const data = await response.json();
+
+      setReports(data.data);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
+  };
+
+  socket.on("updatedNotification", (notification) => {
+    fetchReports();
+  });
 
   return (
     <div className="container mx-auto mt-8">
