@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 import AuthRouter from "./routes/auth.routes.js";
 import EmergencyRoutes from "./routes/emergency.routes.js";
 import volunteerRoutes from "./routes/volunteer.routes.js";
+import chatRouter from "./routes/chat.routes.js";
 
 dotenv.config();
 
@@ -33,7 +34,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", AuthRouter);
 app.use("/api/emergency", EmergencyRoutes);
 app.use("/api/volunteer", volunteerRoutes);
-
+app.use('/api/chats', chatRouter);
 io.on("connection", (socket) => {
   console.log("A client connected");
   // Add Socket.IO event handlers here

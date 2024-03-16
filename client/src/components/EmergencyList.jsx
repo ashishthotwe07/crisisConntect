@@ -2,25 +2,27 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import EmergencyCard from "./EmergencyCard";
 import { io } from "socket.io-client";
+import { AuthSelector } from "../redux/reducers/authSlice";
+import { useSelector } from "react-redux";
 
 const EmergencyList = () => {
   const [emergencyReports, setEmergencyReports] = useState([]);
-
+  const { user } = useSelector(AuthSelector);
   const socket = io("http://localhost:3000");
 
   useEffect(() => {
-    // Fetch initial emergency reports
     fetchEmergencyReports();
   }, []);
+
   const fetchEmergencyReports = async () => {
     try {
       const token = localStorage.getItem("token");
-
+  
       // Set headers with the token
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-
+  
       // Fetch initial emergency reports using API with token in headers
       const response = await fetch(
         "http://localhost:3000/api/emergency/reports",
@@ -28,18 +30,29 @@ const EmergencyList = () => {
           headers: headers,
         }
       );
-
+  
       if (!response.ok) {
         throw new Error("Failed to fetch emergency reports");
       }
-
+  
       const data = await response.json();
-      setEmergencyReports(data.data);
+      let filteredReports = data.data;
+  
+      // Check if the user is logged in
+      if (user) {
+        // Filter out the reports of the current user
+        filteredReports = filteredReports.filter(
+          (report) => report.user !== user._id
+        );
+      }
+  
+      // Update the state with the filtered reports
+      setEmergencyReports(filteredReports);
     } catch (error) {
       toast.error(error.message);
     }
   };
-
+  
   const filteredReports = emergencyReports.filter(
     (report) => report.status !== "resolved"
   );
@@ -47,14 +60,6 @@ const EmergencyList = () => {
   const resolvedReports = emergencyReports.filter(
     (report) => report.status === "resolved"
   );
-  // Filter reports whose time is greater than 1 day
-  const greaterThanOneDayReports = emergencyReports.filter((report) => {
-    const currentTime = new Date();
-    const reportTime = new Date(report.timestamp);
-    const oneDayInMs = 24 * 60 * 60 * 1000; // 1 day in milliseconds
-    const timeDifference = currentTime - reportTime;
-    return timeDifference > oneDayInMs;
-  });
 
   // Sort the filtered reports by timestamp in descending order
   filteredReports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -62,7 +67,6 @@ const EmergencyList = () => {
   socket.on("newEmergencyReport", (notification) => {
     fetchEmergencyReports();
   });
-
 
   socket.on("updatedNotification", (notification) => {
     fetchEmergencyReports();

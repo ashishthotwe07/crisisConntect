@@ -1,26 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaClock, FaMapMarkerAlt } from "react-icons/fa";
-
-// Convert timestamp to human-readable format (e.g., "1 day ago")
-const formatDate = (timestamp) => {
-  const secondsAgo = Math.floor(
-    (Date.now() - new Date(timestamp).getTime()) / 1000
-  );
-  if (secondsAgo < 60) {
-    return `${secondsAgo} second${secondsAgo !== 1 ? "s" : ""} ago`;
-  } else if (secondsAgo < 3600) {
-    const minutesAgo = Math.floor(secondsAgo / 60);
-    return `${minutesAgo} minute${minutesAgo !== 1 ? "s" : ""} ago`;
-  } else if (secondsAgo < 86400) {
-    const hoursAgo = Math.floor(secondsAgo / 3600);
-    return `${hoursAgo} hour${hoursAgo !== 1 ? "s" : ""} ago`;
-  } else {
-    const daysAgo = Math.floor(secondsAgo / 86400);
-    return `${daysAgo} day${daysAgo !== 1 ? "s" : ""} ago`;
-  }
-};
+import ChatApp from "./ChatBox";
 
 const EmergencyCard = ({ emergency }) => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  // Function to toggle the chat container
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
+
+  // Convert timestamp to human-readable format (e.g., "1 day ago")
+  const formatDate = (timestamp) => {
+    const secondsAgo = Math.floor(
+      (Date.now() - new Date(timestamp).getTime()) / 1000
+    );
+    if (secondsAgo < 60) {
+      return `${secondsAgo} second${secondsAgo !== 1 ? "s" : ""} ago`;
+    } else if (secondsAgo < 3600) {
+      const minutesAgo = Math.floor(secondsAgo / 60);
+      return `${minutesAgo} minute${minutesAgo !== 1 ? "s" : ""} ago`;
+    } else if (secondsAgo < 86400) {
+      const hoursAgo = Math.floor(secondsAgo / 3600);
+      return `${hoursAgo} hour${hoursAgo !== 1 ? "s" : ""} ago`;
+    } else {
+      const daysAgo = Math.floor(secondsAgo / 86400);
+      return `${daysAgo} day${daysAgo !== 1 ? "s" : ""} ago`;
+    }
+  };
+
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md p-4">
       <img
@@ -48,19 +56,22 @@ const EmergencyCard = ({ emergency }) => {
         </div>
       </div>
       <div className="flex justify-between mt-4">
-        <button
+        <a
+          href={`/emergency/details/${emergency._id}`}
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onClick={() => console.log("Clicked button 1")}
         >
           Know More
-        </button>
+        </a>
         <button
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onClick={() => console.log("Clicked button 2")}
+          onClick={toggleChat} // Toggle the chat container when the button is clicked
         >
-          Chat
+          Message
         </button>
       </div>
+
+      {/* Conditionally render the ChatContainer component based on the state */}
+      {isChatOpen && <ChatApp toggleChat={toggleChat} />}
     </div>
   );
 };

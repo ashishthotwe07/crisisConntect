@@ -60,11 +60,7 @@ class EmergencyController {
   // Action to retrieve all emergency reports excluding the ones reported by the current user
   async getAllEmergencyReports(req, res) {
     try {
-      const currentUserId = req.user._id; // Assuming you have access to the authenticated user's ID
-
-      const emergencyReports = await EmergencyReport.find({
-        user: { $ne: currentUserId },
-      });
+      const emergencyReports = await EmergencyReport.find();
 
       // Send the fetched emergency reports as a response
       res.status(200).json({ success: true, data: emergencyReports });
@@ -93,15 +89,27 @@ class EmergencyController {
     }
   }
 
-  // Action to retrieve a specific emergency report by its ID
-  async getEmergencyReportById(req, res) {
-    try {
-      // Implement get emergency report by ID logic here
-    } catch (error) {
-      console.error("Error retrieving emergency report by ID:", error);
-      res.status(500).json({ success: false, error: "Internal Server Error" });
+// Action to retrieve a specific emergency report by its ID
+async getEmergencyReportById(req, res) {
+  try {
+    const { id } = req.params;
+
+    // Find the emergency report by ID
+    const emergencyReport = await EmergencyReport.findById(id);
+
+    // Check if the report exists
+    if (!emergencyReport) {
+      return res.status(404).json({ success: false, error: "Report not found" });
     }
+
+    // Send the fetched emergency report as a response
+    res.status(200).json({ success: true, data: emergencyReport });
+  } catch (error) {
+    console.error("Error retrieving emergency report by ID:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
+}
+
 
   // Action to update an existing emergency report
   async updateEmergencyReport(req, res) {
@@ -123,7 +131,7 @@ class EmergencyController {
       const notificationMessage = {
         user: req.user._id,
 
-        message: `The ${updatedReport.type} emergency has been updated to ${updatedReport.status}".`,
+        message: `The ${updatedReport.type} emergency has been  ${updatedReport.status}".`,
       };
       io.emit("updatedNotification", notificationMessage);
 

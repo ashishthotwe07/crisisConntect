@@ -1,23 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import axios from "axios";
 
 const VolunteerNetwork = () => {
-  // Hardcoded user data for demonstration
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      fullName: "John Doe",
-      avatar: "/images/avatar1.png",
-      from: "Mumbai",
-      contact: 89214135135,
-      status: "Active",
-    },
-    // Add 9 more data entries here
-    // ...
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
+  useEffect(() => {
+    const fetchVolunteers = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Get token from local storage
+
+        // Make Axios GET request to fetch volunteers from your API
+        const response = await axios.get(
+          "http://localhost:3000/api/volunteer/get",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Pass the token in the headers
+            },
+          }
+        );
+
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching volunteers:", error);
+        // Handle error
+      }
+    };
+
+    fetchVolunteers();
+  }, []);
   const totalPages = Math.ceil(users.length / itemsPerPage);
 
   const handleChangePage = (page) => {
@@ -63,15 +76,19 @@ const VolunteerNetwork = () => {
                           />
                         </div>
                         <div className="ml-3">
-                          <p className="whitespace-no-wrap text-lg">{user.fullName}</p>
+                          <p className="whitespace-no-wrap text-lg">
+                            {user.username}
+                          </p>
                         </div>
                       </div>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <p className="whitespace-no-wrap text-lg">{user.from}</p>
+                      <p className="whitespace-no-wrap text-lg">{user.address}</p>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <p className="whitespace-no-wrap text-lg">{user.contact}</p>
+                      <p className="whitespace-no-wrap text-lg">
+                        {user.email}
+                      </p>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">

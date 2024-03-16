@@ -9,7 +9,7 @@ const authController = new AuthController();
 router.post("/register", authController.signUp);
 router.post("/login", authController.signIn);
 router.get("/sign-out",verifyToken, authController.signOut);
-router.put("/update-user/:userId", authController.updateUser);
+router.put("/update-user/:userId",verifyToken, authController.updateUser);
 router.delete("/delete-user/:userId", authController.deleteUser);
 
 

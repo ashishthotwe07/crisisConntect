@@ -9,7 +9,6 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import Profile from "./pages/Profile";
 import Products from "./pages/Products";
-import Services from "./pages/Services";
 import AdminRoute from "./components/AdminRoutes";
 import About from "./pages/About";
 import ReportEmergency from "./pages/ReportEmergency";
@@ -17,17 +16,65 @@ import Notification from "./pages/Notification";
 import Volunteer from "./pages/Volunteer";
 import MyReports from "./pages/MyReports";
 import VolunteerNetwork from "./pages/VolunteerNetwork";
+import Error from "./pages/Error";
+import EmergencyDetails from "./pages/EmergencyDetails";
+import ChatBox from "./components/ChatBox";
+import MessageContainer from "./pages/MessageContainer";
 
 export default function App() {
   const routes = createBrowserRouter([
-    { path: "/", element: <Home /> },
+    { path: "/", element: <Home />, errorElement: <Error></Error> },
     { path: "/register", element: <SignUp /> },
     { path: "/login", element: <SignIn /> },
     { path: "/about", element: <About /> },
-    { path: "/report-emergency", element: <ReportEmergency /> },
-    { path: "/notifications", element: <Notification /> },
-    { path: "/volunteer/apply", element: <Volunteer /> },
-    { path: "/volunteer-network", element: <VolunteerNetwork /> },
+    {
+      path: "/report-emergency",
+      element: (
+        <ProtectedRoute>
+          <ReportEmergency />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/notifications",
+      element: (
+        <ProtectedRoute>
+          <Notification />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/volunteer/apply",
+      element: (
+        <ProtectedRoute>
+          <Volunteer />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/volunteer-network",
+      element: (
+        <ProtectedRoute>
+          <VolunteerNetwork />{" "}
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/emergency/details/:id",
+      element: (
+        <ProtectedRoute>
+          <EmergencyDetails></EmergencyDetails>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/chat",
+      element: (
+        <ProtectedRoute>
+          <ChatBox></ChatBox>
+        </ProtectedRoute>
+      ),
+    },
 
     {
       path: "/dashboard",
@@ -36,13 +83,10 @@ export default function App() {
         { path: "profile", element: <Profile /> },
         { path: "products", element: <Products /> },
         { path: "reports", element: <MyReports /> },
+        { path: "messages", element: <MessageContainer /> },
         {
-          path: "services",
-          element: (
-            <AdminRoute>
-              <Services />
-            </AdminRoute>
-          ),
+          path: "volunteer-dashboard",
+          element: <AdminRoute></AdminRoute>,
         },
       ],
     },

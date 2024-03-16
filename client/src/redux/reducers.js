@@ -5,7 +5,8 @@ import { notificationReducer } from './reducers/notificationSlice';
 // Combine all your reducers
 const rootReducer = combineReducers({
     authReducer,
-    notificationReducer
+    notificationReducer,
+   
     
 });
 

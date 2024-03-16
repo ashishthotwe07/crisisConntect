@@ -81,8 +81,8 @@ const ListItem = ({ _id, type, address, status }) => {
           onClick={handleResolveClick}
           className={`block mt-4 text-sm font-medium ${
             status === "resolved"
-              ? "text-red-600 hover:text-indigo-500"
-              : "text-green-600 hover:text-indigo-500"
+              ? "text-red-600 hover:text-red-500"
+              : "text-green-600 hover:text-green-500"
           }`}
         >
           {status === "resolved" ? "Mark As Unresolved" : "Mark As Resolved"}

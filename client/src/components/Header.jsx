@@ -123,14 +123,7 @@ export default function Header() {
                         Volunteer Network
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        to={"/emergency-resources"}
-                        className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent hover:border-b-2 hover:border-black lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                      >
-                        Emergency Resources
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         to={"/notifications"}
@@ -138,7 +131,7 @@ export default function Header() {
                       >
                         Notifications
                         {newNoty && (
-                          <div class="absolute inline-flex items-center justify-center w-3 h-3 text-xs  -top-2 font-bold text-white  border-white rounded-full bg-red-500 ml-1 dark:border-gray-900"></div>
+                          <div class="absolute inline-flex items-center justify-center w-3 h-3 text-xs  md:-top-2 font-bold text-white  border-white rounded-full bg-red-500 ml-1 dark:border-gray-900"></div>
                         )}
                       </Link>
                     </li>

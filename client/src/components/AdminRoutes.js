@@ -8,10 +8,10 @@ const AdminRoute = ({ children }) => {
   const { user } = useSelector(AuthSelector);
   let location = useLocation();
 
-
-  if (user.role === "user") {
-    
-    return <Navigate to="/dashboard/profile" state={{ from: location }} replace />;
+  if (user.role === "customer") {
+    return (
+      <Navigate to="/dashboard/profile" state={{ from: location }} replace />
+    );
   }
   return children;
 };

@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/report", verifyToken, EmergencyController.createEmergencyReport);
 
 // Route to retrieve all emergency reports
-router.get("/reports", verifyToken, EmergencyController.getAllEmergencyReports);
+router.get("/reports", EmergencyController.getAllEmergencyReports);
 
 router.get(
   "/users/reports",
@@ -20,7 +20,11 @@ router.get(
 router.get("/reports/:id", EmergencyController.getEmergencyReportById);
 
 // Route to update an existing emergency report
-router.put("/reports/:id",verifyToken, EmergencyController.updateEmergencyReport);
+router.put(
+  "/reports/:id",
+  verifyToken,
+  EmergencyController.updateEmergencyReport
+);
 
 // Route to delete an existing emergency report
 router.delete("/reports/:id", EmergencyController.deleteEmergencyReport);
