@@ -1,52 +1,52 @@
 import Message from "../models/chat.model.js";
 import Conversation from "../models/conversation.model.js";
 import User from "../models/user.model.js";
+import { io } from "../server.js";
 
 class ChatController {
-    sendMessage = async (req, res) => {
-        try {
-          const { message } = req.body;
-          console.log(message)
-          const { id: recipientId } = req.params;
-          const senderId = req.user._id;
-          console.log(recipientId);
-          console.log(senderId)
-      
-          // Create a new chat message with sender and recipient IDs
-          const newMessage = new Message({
-            sender: senderId,
-            recipient: recipientId,
-            message,
-          });
-      
-          // Save the new message
-          await newMessage.save();
-      
-          // Find or create the conversation between the users
-          let conversation = await Conversation.findOne({
-            users: { $all: [senderId, recipientId] },
-          });
-      
-          // If conversation doesn't exist, create a new one
-          if (!conversation) {
-            conversation = new Conversation({
-              users: [senderId, recipientId], // Include the sender and recipient in the conversation
-             
-            });
-          } else {
-            conversation.messages.push(newMessage._id); // Add the new message to the existing conversation
-          }
-      
-          // Save the conversation
-          await conversation.save();
-      
-          return res.status(201).json({ message: newMessage});
-        } catch (error) {
-          console.error(error);
-          return res.status(500).json({ error: "Internal Server Error" });
-        }
-      };
-      
+  sendMessage = async (req, res) => {
+    try {
+      const { message } = req.body;
+      const { id: recipientId } = req.params;
+      const senderId = req.user._id;
+
+      // Create a new chat message with sender and recipient IDs
+      const newMessage = new Message({
+        sender: senderId,
+        recipient: recipientId,
+        message,
+      });
+
+      // Save the new message
+      await newMessage.save();
+
+      // Find or create the conversation between the users
+      let conversation = await Conversation.findOne({
+        users: { $all: [senderId, recipientId] },
+      });
+
+      // If conversation doesn't exist, create a new one
+      if (!conversation) {
+        conversation = new Conversation({
+          users: [senderId, recipientId], // Include the sender and recipient in the conversation
+        });
+      } else {
+        conversation.messages.push(newMessage._id); // Add the new message to the existing conversation
+      }
+
+      // Save the conversation
+      await conversation.save();
+
+      // Emit the new message to the recipient's room
+      io.to(recipientId).emit("newMessage", newMessage);
+
+      return res.status(201).json({ message: newMessage });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
   getMessages = async (req, res) => {
     try {
       const { id } = req.params;
@@ -65,8 +65,7 @@ class ChatController {
       // Return the messages associated with the conversation
       return res.status(200).json(conversation.messages);
     } catch (error) {
-
-      console.error("error in server" , error);
+      console.error("error in server", error);
       return res.status(500).json({ error: "Internal Server Error" });
     }
   };

@@ -34,10 +34,11 @@ app.get("/", (req, res) => {
 app.use("/api/auth", AuthRouter);
 app.use("/api/emergency", EmergencyRoutes);
 app.use("/api/volunteer", volunteerRoutes);
-app.use('/api/chats', chatRouter);
+app.use("/api/chats", chatRouter);
+
 io.on("connection", (socket) => {
   console.log("A client connected");
-  // Add Socket.IO event handlers here
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });

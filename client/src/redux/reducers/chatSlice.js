@@ -13,7 +13,7 @@ export const fetchChats = createAsyncThunk("chats/fetchChats", async ({user}) =>
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response)
+   
     return response.data;
   } catch (error) {
     throw error;
@@ -34,8 +34,7 @@ export const createChat = createAsyncThunk(
           },
         }
       );
-  
-      console.log(response.data)
+
       return response.data.message;
     } catch (error) {
       throw error;

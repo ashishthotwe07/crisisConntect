@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
 import { chatSelector, createChat, fetchChats } from "../redux/reducers/chatSlice";
+import io from "socket.io-client";
+
+const socket = io('http://localhost:3000'); // Connect to your server
 
 function ChatApp({ toggleChat, user }) {
   const [inputValue, setInputValue] = useState("");
@@ -11,7 +14,7 @@ function ChatApp({ toggleChat, user }) {
 
   useEffect(() => {
     dispatch(fetchChats({ user }));
-  }, [dispatch, user]);
+  }, [messages]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -29,6 +32,18 @@ function ChatApp({ toggleChat, user }) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  // Listen for new messages
+  useEffect(() => {
+    socket.on("newMessage", (newMessage) => {
+      dispatch(createChat(newMessage)); // Add new message directly
+    });
+    // Clean up event listener
+    return () => {
+      socket.off("newMessage");
+    };
+  }, [dispatch]);
+
 
   return (
     <div className="fixed bottom-0 right-0 mb-4 mr-4">
