@@ -1,11 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoCloseOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from 'react-redux';
+import { chatSelector, createChat, fetchChats } from "../redux/reducers/chatSlice";
 
-function ChatApp({ toggleChat  }) {
-
-  const [messages, setMessages] = useState([]);
+function ChatApp({ toggleChat, user }) {
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null);
+  const dispatch = useDispatch();
+  const { messages } = useSelector(chatSelector);
+
+  useEffect(() => {
+    dispatch(fetchChats({ user }));
+  }, [dispatch, user]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -13,22 +19,11 @@ function ChatApp({ toggleChat  }) {
 
   const handleSendMessage = () => {
     if (inputValue.trim() !== "") {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: inputValue, sender: "user" },
-      ]);
+      dispatch(createChat({ message: inputValue, user }));
       setInputValue("");
-
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: "This is a response from the chatbot.", sender: "bot" },
-        ]);
-      }, 500);
     }
   };
 
-  // Scroll to the last message when messages update
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -39,32 +34,29 @@ function ChatApp({ toggleChat  }) {
     <div className="fixed bottom-0 right-0 mb-4 mr-4">
       <div className="fixed bottom-16 right-4 w-96">
         <div className="bg-white shadow-md rounded-lg max-w-lg w-full">
-          <div className="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
+          <div className="p-4 border-b bg-gray-500 text-white rounded-t-lg flex justify-between items-center">
             <p className="text-lg font-semibold">Admin Bot</p>
             <button
               className="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400"
-              onClick={toggleChat} // Close the chat container when the close icon is clicked
+              onClick={toggleChat}
             >
               <IoCloseOutline className="text-xl" />
             </button>
           </div>
           <div className="p-4 h-80 overflow-y-auto">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`mb-2 ${
-                  message.sender === "user" ? "text-right" : ""
-                }`}
-              >
-                <p
-                  className={`bg-${
-                    message.sender === "user" ? "red" : "green"
-                  }-500 text-white rounded-lg py-2 px-4 inline-block`}
-                >
-                  {message.text}
-                </p>
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500 py-2">
+                Start a conversation
               </div>
-            ))}
+            ) : (
+              messages.map((message, index) => (
+                <div key={index} className={`mb-2 ${message.sender !== user ? "text-right" : ""}`}>
+                  <p className={`bg-${message.sender === user ? "red" : "gray"}-500 text-white rounded-lg py-2 px-4 inline-block`}>
+                    {message.message} {/* Assuming the message structure is correct */}
+                  </p>
+                </div>
+              ))
+            )}
             <div ref={messagesEndRef} />
           </div>
           <div className="p-4 border-t flex">

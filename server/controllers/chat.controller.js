@@ -6,8 +6,11 @@ class ChatController {
     sendMessage = async (req, res) => {
         try {
           const { message } = req.body;
-          const { user: recipientId } = req.params; // Assuming 'user' represents the recipient ID
+          console.log(message)
+          const { id: recipientId } = req.params;
           const senderId = req.user._id;
+          console.log(recipientId);
+          console.log(senderId)
       
           // Create a new chat message with sender and recipient IDs
           const newMessage = new Message({
@@ -37,7 +40,7 @@ class ChatController {
           // Save the conversation
           await conversation.save();
       
-          return res.status(201).json({ message: "Message sent successfully" });
+          return res.status(201).json({ message: newMessage});
         } catch (error) {
           console.error(error);
           return res.status(500).json({ error: "Internal Server Error" });

@@ -71,7 +71,7 @@ const EmergencyCard = ({ emergency }) => {
       </div>
 
       {/* Conditionally render the ChatContainer component based on the state */}
-      {isChatOpen && <ChatApp toggleChat={toggleChat} />}
+      {isChatOpen && <ChatApp toggleChat={toggleChat} user={emergency.user}/>}
     </div>
   );
 };
