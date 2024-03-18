@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import axios from "axios";
+import ChatApp from "../components/ChatBox";
 
 const VolunteerNetwork = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null); // State to store the selected user ID
   const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get token from local storage
-
-        // Make Axios GET request to fetch volunteers from your API
+        const token = localStorage.getItem("token");
         const response = await axios.get(
           "http://localhost:3000/api/volunteer/get",
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the headers
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -25,12 +26,12 @@ const VolunteerNetwork = () => {
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching volunteers:", error);
-        // Handle error
       }
     };
 
     fetchVolunteers();
   }, []);
+
   const totalPages = Math.ceil(users.length / itemsPerPage);
 
   const handleChangePage = (page) => {
@@ -41,20 +42,20 @@ const VolunteerNetwork = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentUsers = users.slice(startIndex, endIndex);
 
+  // Function to toggle the chat container
+  const toggleChat = (userId) => {
+    setIsChatOpen(!isChatOpen);
+    setSelectedUserId(userId); // Set the selected user ID
+  };
+
   return (
     <Layout>
       <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
-        <div className="flex items-center justify-between pb-6">
-          <div>
-            <h1 className="font-bold text-lg text-gray-700">Volunteers</h1>
-            <span className="text-sm text-gray-500">
-              Connect To Volunteers in Need
-            </span>
-          </div>
-        </div>
+        {/* Table */}
         <div className="overflow-y-hidden rounded-lg border">
           <div className="overflow-x-auto">
             <table className="w-full">
+              {/* Table header */}
               <thead>
                 <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
                   <th className="px-5 py-3">Volunteer Name</th>
@@ -63,9 +64,11 @@ const VolunteerNetwork = () => {
                   <th className="px-5 py-3"></th>
                 </tr>
               </thead>
+              {/* Table body */}
               <tbody className="text-gray-500">
-                {currentUsers.map((user) => (
-                  <tr key={user.id}>
+                {currentUsers.map((user, index) => (
+                  <tr key={index}>
+                    {/* Display user data */}
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       <div className="flex items-center">
                         <div className="h-10 w-10 flex-shrink-0">
@@ -83,16 +86,20 @@ const VolunteerNetwork = () => {
                       </div>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <p className="whitespace-no-wrap text-lg">{user.address}</p>
-                    </td>
-                    <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       <p className="whitespace-no-wrap text-lg">
-                        {user.email}
+                        {user.address}
                       </p>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                      <p className="whitespace-no-wrap text-lg">{user.email}</p>
+                    </td>
+                    <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                      {/* Button to open chat for the user */}
+                      <button
+                        onClick={() => toggleChat(user._id)}
+                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+                      >
+                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                           Message
                         </span>
                       </button>
@@ -102,6 +109,7 @@ const VolunteerNetwork = () => {
               </tbody>
             </table>
           </div>
+          {/* Pagination */}
           <div className="flex flex-col items-center border-t bg-white px-5 py-5 sm:flex-row sm:justify-between">
             <span className="text-xs text-gray-600 sm:text-sm">
               Showing {startIndex + 1} to {Math.min(endIndex, users.length)} of{" "}
@@ -132,6 +140,9 @@ const VolunteerNetwork = () => {
           </div>
         </div>
       </div>
+
+      {/* Render ChatApp component when isChatOpen is true */}
+      {isChatOpen && <ChatApp toggleChat={toggleChat} user={selectedUserId} />}
     </Layout>
   );
 };

@@ -58,9 +58,11 @@ export default function EmergencyDetails() {
                   <ul class="mt-4 text-gray-600">
                     <li>
                       <h2 class="mt-6 text-2xl font-extrabold text-gray-800">
-                      <span className="mt-2">Type:</span>  {emergencyData.type}
+                        <span className="mt-2">Type:</span> {emergencyData.type}
                       </h2>
-                      <p class="mt-2 mb-2 text-gray-600">{emergencyData.details}</p>
+                      <p class="mt-2 mb-2 text-gray-600">
+                        {emergencyData.details}
+                      </p>
                     </li>
                     <li>
                       <span class="font-bold">Location:</span>{" "}

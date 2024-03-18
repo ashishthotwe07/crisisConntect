@@ -31,20 +31,12 @@ const Hero = () => {
             Report Emergency
             <FaExternalLinkAlt className="ml-2 w-5 h-5" />
           </a>
-          {!isVolunteer ? (
+          {!isVolunteer && (
             <a
               href="/volunteer/apply"
               className="inline-flex items-center py-3 px-6 text-base font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-900 focus:ring-4 focus:ring-gray-600"
             >
               Become a Volunteer
-              <AiFillCheckCircle className="ml-2 w-5 h-5" />
-            </a>
-          ) : (
-            <a
-              href="/volunteer"
-              className="inline-flex items-center py-3 px-6 text-base font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300"
-            >
-              Volunteer Dashboard
               <AiFillCheckCircle className="ml-2 w-5 h-5" />
             </a>
           )}

@@ -6,6 +6,7 @@ const token = localStorage.getItem("token");
 
 // Define the async thunk for fetching chats
 export const fetchChats = createAsyncThunk("chats/fetchChats", async ({user}) => {
+  
   try {
     
     const response = await axios.get(`http://localhost:3000/api/chats/${user}`, {
@@ -24,6 +25,7 @@ export const fetchChats = createAsyncThunk("chats/fetchChats", async ({user}) =>
 export const createChat = createAsyncThunk(
   "chats/createChat",
   async ({ user, message }) => {
+    const token = localStorage.getItem("token"); 
     try {
       const response = await axios.post(
         `http://localhost:3000/api/chats/send/${user}`,

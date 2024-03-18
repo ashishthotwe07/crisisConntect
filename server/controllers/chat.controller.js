@@ -56,6 +56,9 @@ class ChatController {
       const conversation = await Conversation.findOne({
         users: { $all: [userId, id] },
       }).populate("messages");
+      const user = await Conversation.find().populate("users");
+
+      console.log(user);
 
       // If conversation doesn't exist or user is not part of the conversation, return 404 Not Found
       if (!conversation) {
@@ -65,10 +68,11 @@ class ChatController {
       // Return the messages associated with the conversation
       return res.status(200).json(conversation.messages);
     } catch (error) {
-      console.error("error in server", error);
+      console.error("error in getMessages controller in server", error);
       return res.status(500).json({ error: "Internal Server Error" });
     }
   };
+
 }
 
 export default new ChatController();

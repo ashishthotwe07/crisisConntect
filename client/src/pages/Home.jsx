@@ -1,14 +1,17 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import Layout from "../components/Layout";
-import Hero from "../components/Hero";
-import EmergencyList from "../components/EmergencyList";
-import ChatBox from "../components/ChatBox";
+
+// Lazy load components
+const Hero = lazy(() => import("../components/Hero"));
+const EmergencyList = lazy(() => import("../components/EmergencyList"));
 
 export default function Home() {
   return (
     <Layout>
-      <Hero />
-      <EmergencyList />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Hero />
+        <EmergencyList />
+      </Suspense>
     </Layout>
   );
 }

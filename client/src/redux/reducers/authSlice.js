@@ -48,7 +48,9 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
     try {
+    
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+     console.log(token);
       await axios.get("http://localhost:3000/api/auth/sign-out", {
         headers: {
           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header

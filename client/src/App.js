@@ -1,99 +1,186 @@
-import React from "react";
+import React, { Suspense, startTransition } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoutes";
-import Profile from "./pages/Profile";
-import Products from "./pages/Products";
-import AdminRoute from "./components/AdminRoutes";
-import About from "./pages/About";
-import ReportEmergency from "./pages/ReportEmergency";
-import Notification from "./pages/Notification";
-import Volunteer from "./pages/Volunteer";
-import MyReports from "./pages/MyReports";
-import VolunteerNetwork from "./pages/VolunteerNetwork";
-import Error from "./pages/Error";
-import EmergencyDetails from "./pages/EmergencyDetails";
-import ChatBox from "./components/ChatBox";
-import MessageContainer from "./pages/MessageContainer";
+
+// Lazy load components
+const SignUp = React.lazy(() => import("./pages/SignUp"));
+const SignIn = React.lazy(() => import("./pages/SignIn"));
+const Home = React.lazy(() => import("./pages/Home"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const Profile = React.lazy(() => import("./pages/Profile"));
+const Products = React.lazy(() => import("./pages/Products"));
+const About = React.lazy(() => import("./pages/About"));
+const ReportEmergency = React.lazy(() => import("./pages/ReportEmergency"));
+const Notification = React.lazy(() => import("./pages/Notification"));
+const Volunteer = React.lazy(() => import("./pages/Volunteer"));
+const MyReports = React.lazy(() => import("./pages/MyReports"));
+const VolunteerNetwork = React.lazy(() => import("./pages/VolunteerNetwork"));
+const Error = React.lazy(() => import("./pages/Error"));
+const EmergencyDetails = React.lazy(() => import("./pages/EmergencyDetails"));
+const ChatBox = React.lazy(() => import("./components/ChatBox"));
+const MessageContainer = React.lazy(() => import("./pages/MessageContainer"));
+const ProtectedRoute = React.lazy(() => import("./components/ProtectedRoutes"));
+const AdminRoute = React.lazy(() => import("./components/AdminRoutes"));
 
 export default function App() {
   const routes = createBrowserRouter([
-    { path: "/", element: <Home />, errorElement: <Error></Error> },
-    { path: "/register", element: <SignUp /> },
-    { path: "/login", element: <SignIn /> },
-    { path: "/about", element: <About /> },
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <Home />
+        </Suspense>
+      ),
+      errorElement: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <Error />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/register",
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <SignUp />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/login",
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <SignIn />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/about",
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <About />
+        </Suspense>
+      ),
+    },
     {
       path: "/report-emergency",
       element: (
-        <ProtectedRoute>
-          <ReportEmergency />
-        </ProtectedRoute>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+           <ReportEmergency />
+          </ProtectedRoute>
+        </Suspense>
       ),
     },
     {
       path: "/notifications",
       element: (
-        <ProtectedRoute>
-          <Notification />
-        </ProtectedRoute>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+             <Notification />
+          </ProtectedRoute>
+        </Suspense>
       ),
     },
     {
       path: "/volunteer/apply",
       element: (
-        <ProtectedRoute>
-          <Volunteer />
-        </ProtectedRoute>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+             <Volunteer />
+          </ProtectedRoute>
+        </Suspense>
       ),
     },
     {
       path: "/volunteer-network",
       element: (
-        <ProtectedRoute>
-          <VolunteerNetwork />{" "}
-        </ProtectedRoute>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+             <VolunteerNetwork />
+          </ProtectedRoute>
+        </Suspense>
       ),
     },
     {
       path: "/emergency/details/:id",
       element: (
-        <ProtectedRoute>
-          <EmergencyDetails></EmergencyDetails>
-        </ProtectedRoute>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+             <EmergencyDetails />
+          </ProtectedRoute>
+        </Suspense>
       ),
     },
     {
       path: "/chat",
       element: (
-        <ProtectedRoute>
-          <ChatBox></ChatBox>
-        </ProtectedRoute>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+             <ChatBox />
+          </ProtectedRoute>
+        </Suspense>
       ),
     },
-
     {
       path: "/dashboard",
-      element: <ProtectedRoute>{<Dashboard />}</ProtectedRoute>,
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProtectedRoute>
+             <Dashboard />
+          </ProtectedRoute>
+        </Suspense>
+      ),
       children: [
-        { path: "profile", element: <Profile /> },
-        { path: "products", element: <Products /> },
-        { path: "reports", element: <MyReports /> },
-        { path: "messages", element: <MessageContainer /> },
+        {
+          path: "profile",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Profile />
+            </Suspense>
+          ),
+        },
+        {
+          path: "products",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <Products />
+            </Suspense>
+          ),
+        },
+        {
+          path: "reports",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <MyReports />
+            </Suspense>
+          ),
+        },
+        {
+          path: "messages",
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <MessageContainer />
+            </Suspense>
+          ),
+        },
         {
           path: "volunteer-dashboard",
-          element: <AdminRoute></AdminRoute>,
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <AdminRoute></AdminRoute>
+            </Suspense>
+          ),
         },
       ],
     },
   ]);
+
   return (
     <div>
-      <RouterProvider router={routes} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RouterProvider router={routes} />
+      </Suspense>
       <ToastContainer />
     </div>
   );

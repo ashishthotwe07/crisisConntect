@@ -50,7 +50,7 @@ function ChatApp({ toggleChat, user }) {
       <div className="fixed bottom-16 right-4 w-96">
         <div className="bg-white shadow-md rounded-lg max-w-lg w-full">
           <div className="p-4 border-b bg-gray-500 text-white rounded-t-lg flex justify-between items-center">
-            <p className="text-lg font-semibold">Admin Bot</p>
+            <p className="text-lg font-semibold">{user}</p>
             <button
               className="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400"
               onClick={toggleChat}
@@ -69,9 +69,10 @@ function ChatApp({ toggleChat, user }) {
                   <p className={`bg-${message.sender === user ? "red" : "gray"}-500 text-white rounded-lg py-2 px-4 inline-block`}>
                     {message.message} {/* Assuming the message structure is correct */}
                   </p>
+                  <p>{new Date(message.createdAt).toLocaleTimeString()}</p>
                 </div>
               ))
-            )}
+            )}  
             <div ref={messagesEndRef} />
           </div>
           <div className="p-4 border-t flex">
