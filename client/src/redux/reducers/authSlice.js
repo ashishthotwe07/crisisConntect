@@ -32,8 +32,7 @@ export const loginUser = createAsyncThunk(
         "http://localhost:3000/api/auth/login",
         userData
       );
-
-      const token = response.data.token; // Extract the token from the response
+      const token = response.data.token;
       localStorage.setItem("token", token);
       return response.data.user;
     } catch (error) {
@@ -48,15 +47,13 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
     try {
-    
-      const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-     console.log(token);
+      const token = localStorage.getItem("token");
       await axios.get("http://localhost:3000/api/auth/sign-out", {
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          Authorization: `Bearer ${token}`,
         },
       });
-      localStorage.removeItem("token"); // Remove the token from localStorage after logout
+      localStorage.removeItem("token");
       return null;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -72,7 +69,7 @@ export const updateUser = createAsyncThunk(
     try {
       const response = await axios.put(
         `http://localhost:3000/api/auth/update-user/${userId}`,
-        data, // Data to be updated
+        data,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -81,7 +78,6 @@ export const updateUser = createAsyncThunk(
       );
       return response.data.user;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(
         error.response.data.message || "Update failed"
       );
@@ -93,15 +89,12 @@ export const deleteUser = createAsyncThunk(
   "auth/delete",
   async (userId, thunkAPI) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:3000/api/auth/${userId}`, // Assuming the API endpoint for deleting user data
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Pass the token in the Authorization header
-          },
-        }
-      );
-      localStorage.removeItem("token"); // Remove the token from localStorage after deleting the user
+      await axios.delete(`http://localhost:3000/api/auth/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      localStorage.removeItem("token");
       return null;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -115,7 +108,7 @@ export const BecomeVolunteer = createAsyncThunk(
   "volunteer/create",
   async (role, thunkAPI) => {
     try {
-      const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:3000/api/volunteer/create",
         role,
@@ -128,7 +121,6 @@ export const BecomeVolunteer = createAsyncThunk(
       );
       return response.data.user;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(
         error.response.data.message || "Internal server error "
       );
@@ -148,12 +140,9 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        console.log(action.payload);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
-
         state.error = action.payload;
       })
       .addCase(loginUser.pending, (state) => {
@@ -162,12 +151,9 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        console.log(action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
-
         state.error = action.payload;
       })
       .addCase(logoutUser.pending, (state) => {
@@ -187,13 +173,10 @@ const authSlice = createSlice({
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        console.log("User updated:", action.payload);
       })
-
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        console.error("Failed to update user:", action.payload);
       })
       .addCase(deleteUser.pending, (state) => {
         state.loading = true;
@@ -201,21 +184,17 @@ const authSlice = createSlice({
       .addCase(deleteUser.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
-        console.log("User deleted");
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        console.error("Failed to delete user:", action.payload);
       })
       .addCase(BecomeVolunteer.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        console.log("User updated:", action.payload);
       });
   },
 });
 
 export const authReducer = authSlice.reducer;
-
 export const AuthSelector = (state) => state.authReducer;

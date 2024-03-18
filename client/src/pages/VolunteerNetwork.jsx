@@ -42,10 +42,9 @@ const VolunteerNetwork = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentUsers = users.slice(startIndex, endIndex);
 
-  // Function to toggle the chat container
   const toggleChat = (userId) => {
     setIsChatOpen(!isChatOpen);
-    setSelectedUserId(userId); // Set the selected user ID
+    setSelectedUserId(userId); 
   };
 
   return (
@@ -68,7 +67,6 @@ const VolunteerNetwork = () => {
               <tbody className="text-gray-500">
                 {currentUsers.map((user, index) => (
                   <tr key={index}>
-                    {/* Display user data */}
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                       <div className="flex items-center">
                         <div className="h-10 w-10 flex-shrink-0">
@@ -94,7 +92,7 @@ const VolunteerNetwork = () => {
                       <p className="whitespace-no-wrap text-lg">{user.email}</p>
                     </td>
                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                      {/* Button to open chat for the user */}
+                    
                       <button
                         onClick={() => toggleChat(user._id)}
                         className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
@@ -141,7 +139,6 @@ const VolunteerNetwork = () => {
         </div>
       </div>
 
-      {/* Render ChatApp component when isChatOpen is true */}
       {isChatOpen && <ChatApp toggleChat={toggleChat} user={selectedUserId} />}
     </Layout>
   );

@@ -17,42 +17,37 @@ const EmergencyList = () => {
   const fetchEmergencyReports = async () => {
     try {
       const token = localStorage.getItem("token");
-  
-      // Set headers with the token
+
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-  
-      // Fetch initial emergency reports using API with token in headers
+
       const response = await fetch(
         "http://localhost:3000/api/emergency/reports",
         {
           headers: headers,
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to fetch emergency reports");
       }
-  
+
       const data = await response.json();
       let filteredReports = data.data;
-  
-      // Check if the user is logged in
+
       if (user) {
-        // Filter out the reports of the current user
         filteredReports = filteredReports.filter(
           (report) => report.user !== user._id
         );
       }
-  
-      // Update the state with the filtered reports
+
       setEmergencyReports(filteredReports);
     } catch (error) {
       toast.error(error.message);
     }
   };
-  
+
   const filteredReports = emergencyReports.filter(
     (report) => report.status !== "resolved"
   );
@@ -61,7 +56,6 @@ const EmergencyList = () => {
     (report) => report.status === "resolved"
   );
 
-  // Sort the filtered reports by timestamp in descending order
   filteredReports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   socket.on("newEmergencyReport", (notification) => {

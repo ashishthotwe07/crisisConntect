@@ -5,12 +5,10 @@ import ChatApp from "./ChatBox";
 const EmergencyCard = ({ emergency }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // Function to toggle the chat container
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
 
-  // Convert timestamp to human-readable format (e.g., "1 day ago")
   const formatDate = (timestamp) => {
     const secondsAgo = Math.floor(
       (Date.now() - new Date(timestamp).getTime()) / 1000
@@ -64,14 +62,13 @@ const EmergencyCard = ({ emergency }) => {
         </a>
         <button
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-          onClick={toggleChat} // Toggle the chat container when the button is clicked
+          onClick={toggleChat}
         >
           Message
         </button>
       </div>
 
-      {/* Conditionally render the ChatContainer component based on the state */}
-      {isChatOpen && <ChatApp toggleChat={toggleChat} user={emergency.user}/>}
+      {isChatOpen && <ChatApp toggleChat={toggleChat} user={emergency.user} />}
     </div>
   );
 };

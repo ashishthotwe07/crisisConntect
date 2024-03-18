@@ -9,7 +9,6 @@ const SignIn = React.lazy(() => import("./pages/SignIn"));
 const Home = React.lazy(() => import("./pages/Home"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Profile = React.lazy(() => import("./pages/Profile"));
-const Products = React.lazy(() => import("./pages/Products"));
 const About = React.lazy(() => import("./pages/About"));
 const ReportEmergency = React.lazy(() => import("./pages/ReportEmergency"));
 const Notification = React.lazy(() => import("./pages/Notification"));
@@ -18,8 +17,6 @@ const MyReports = React.lazy(() => import("./pages/MyReports"));
 const VolunteerNetwork = React.lazy(() => import("./pages/VolunteerNetwork"));
 const Error = React.lazy(() => import("./pages/Error"));
 const EmergencyDetails = React.lazy(() => import("./pages/EmergencyDetails"));
-const ChatBox = React.lazy(() => import("./components/ChatBox"));
-const MessageContainer = React.lazy(() => import("./pages/MessageContainer"));
 const ProtectedRoute = React.lazy(() => import("./components/ProtectedRoutes"));
 const AdminRoute = React.lazy(() => import("./components/AdminRoutes"));
 
@@ -112,16 +109,7 @@ export default function App() {
         </Suspense>
       ),
     },
-    {
-      path: "/chat",
-      element: (
-        <Suspense fallback={<div>Loading...</div>}>
-          <ProtectedRoute>
-             <ChatBox />
-          </ProtectedRoute>
-        </Suspense>
-      ),
-    },
+
     {
       path: "/dashboard",
       element: (
@@ -140,14 +128,7 @@ export default function App() {
             </Suspense>
           ),
         },
-        {
-          path: "products",
-          element: (
-            <Suspense fallback={<div>Loading...</div>}>
-              <Products />
-            </Suspense>
-          ),
-        },
+
         {
           path: "reports",
           element: (
@@ -156,14 +137,7 @@ export default function App() {
             </Suspense>
           ),
         },
-        {
-          path: "messages",
-          element: (
-            <Suspense fallback={<div>Loading...</div>}>
-              <MessageContainer />
-            </Suspense>
-          ),
-        },
+
         {
           path: "volunteer-dashboard",
           element: (

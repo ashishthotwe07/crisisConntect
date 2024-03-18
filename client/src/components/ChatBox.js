@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { chatSelector, createChat, fetchChats } from "../redux/reducers/chatSlice";
 import io from "socket.io-client";
 
-const socket = io('http://localhost:3000'); // Connect to your server
+const socket = io('http://localhost:3000');
 
 function ChatApp({ toggleChat, user }) {
   const [inputValue, setInputValue] = useState("");
@@ -33,12 +33,10 @@ function ChatApp({ toggleChat, user }) {
     }
   }, [messages]);
 
-  // Listen for new messages
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
-      dispatch(createChat(newMessage)); // Add new message directly
+      dispatch(createChat(newMessage));
     });
-    // Clean up event listener
     return () => {
       socket.off("newMessage");
     };
@@ -67,7 +65,7 @@ function ChatApp({ toggleChat, user }) {
               messages.map((message, index) => (
                 <div key={index} className={`mb-2 ${message.sender !== user ? "text-right" : ""}`}>
                   <p className={`bg-${message.sender === user ? "red" : "gray"}-500 text-white rounded-lg py-2 px-4 inline-block`}>
-                    {message.message} {/* Assuming the message structure is correct */}
+                    {message.message}
                   </p>
                   <p>{new Date(message.createdAt).toLocaleTimeString()}</p>
                 </div>

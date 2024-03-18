@@ -7,7 +7,6 @@ import { AuthSelector } from "../redux/reducers/authSlice";
 const Hero = () => {
   const { user } = useSelector(AuthSelector);
 
-  // Check if the user is a volunteer
   const isVolunteer = user && user.role === "volunteer";
 
   return (

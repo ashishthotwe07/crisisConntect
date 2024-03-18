@@ -39,18 +39,13 @@ const EmergencyReportForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Retrieve token from local storage
     const token = localStorage.getItem("token");
-
-    // Set headers with the token
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
 
     try {
-      // Make API call with token in the headers
       const response = await fetch(
         "http://localhost:3000/api/emergency/report",
         {
@@ -60,12 +55,10 @@ const EmergencyReportForm = () => {
         }
       );
 
-      // Check if the request was successful
       if (!response.ok) {
         throw new Error("Failed to create emergency report");
       }
 
-      // Reset the form data after successful submission
       setFormData({
         type: "",
         address: "",

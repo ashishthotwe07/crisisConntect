@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch } from "react-redux";
-import {  logoutUser } from "../redux/reducers/authSlice";
-import { FiMenu,  FiSettings,  FiLogOut } from "react-icons/fi";
+import { logoutUser } from "../redux/reducers/authSlice";
+import { FiMenu, FiSettings, FiLogOut } from "react-icons/fi";
 import { TbReport } from "react-icons/tb";
-import { FaUser, FaEnvelope } from 'react-icons/fa'
+import { FaUser } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -29,7 +29,6 @@ const Dashboard = () => {
       });
   };
 
-  // const dashboardHeight = `calc(100vh - 70px)`;
 
   return (
     <Layout>
@@ -53,20 +52,18 @@ const Dashboard = () => {
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
+              <>
+                <li>
+                  <a
+                    href="/dashboard/reports"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  >
+                    <TbReport className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <span className="ms-3">Reported Emergencies</span>
+                  </a>
+                </li>
+              </>
 
-              
-                <>
-                  <li>
-                    <a
-                      href="/dashboard/reports"
-                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                    >
-                      <TbReport className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                      <span className="ms-3">Reported Emergencies</span>
-                    </a>
-                  </li>
-                </>
-             
               <li>
                 <a
                   href="/dashboard/profile"
@@ -77,19 +74,6 @@ const Dashboard = () => {
                 </a>
               </li>
 
-             
-                <>
-                  <li>
-                    <a
-                      href="/dashboard/messages"
-                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                    >
-                      <FaEnvelope className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                      <span className="ms-3">Messages</span>
-                    </a>
-                  </li>
-                </>
-          
               <li>
                 <a
                   href="/dashboard/settings"
