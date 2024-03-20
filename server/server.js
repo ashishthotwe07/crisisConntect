@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
 
 const port = process.env.PORT;
 server.listen(port, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${port}`);
 });
 
 app.use(express.static(path.join(__dirname, "/client/build")));
