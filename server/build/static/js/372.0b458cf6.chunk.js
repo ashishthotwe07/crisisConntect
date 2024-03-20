@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkclient=self.webpackChunkclient||[]).push([[372],{2372:(e,t,r)=>{r.r(t),r.d(t,{default:()=>n});r(5043);var s=r(3216),l=r(3003),c=r(695),a=r(579);const n=e=>{let{children:t}=e;const{user:r}=(0,l.d4)(c.at);let n=(0,s.zy)();return"customer"===r.role?(0,a.jsx)(s.C5,{to:"/dashboard/profile",state:{from:n},replace:!0}):t}}}]);
-//# sourceMappingURL=372.0b458cf6.chunk.js.map

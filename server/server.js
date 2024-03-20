@@ -28,8 +28,8 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
+const __dirname = path.resolve();
 
-app.use(express.static(path.join(__dirname, "build")));
 app.get("/", (req, res) => {
   res.send("Welcome to the homepage!");
 });
@@ -47,7 +47,14 @@ io.on("connection", (socket) => {
   });
 });
 
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
