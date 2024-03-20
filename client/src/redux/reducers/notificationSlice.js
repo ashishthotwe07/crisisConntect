@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { io } from "socket.io-client";
 import { store } from "../store";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://crisisconntect.onrender.com/");
 
 const initialState = {
   notifications: [],
