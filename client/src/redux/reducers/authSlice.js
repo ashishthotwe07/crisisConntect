@@ -12,7 +12,7 @@ export const registerUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/register",
+        "http://localhost:5000/api/auth/register",
         userData
       );
       return response.data.user;
@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         userData
       );
       const token = response.data.token;
@@ -48,7 +48,7 @@ export const logoutUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.get("http://localhost:3000/api/auth/sign-out", {
+      await axios.get("http://localhost:5000/api/auth/sign-out", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ export const updateUser = createAsyncThunk(
   async ({ userId, data }, thunkAPI) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/auth/update-user/${userId}`,
+        `http://localhost:5000/api/auth/update-user/${userId}`,
         data,
         {
           headers: {
@@ -89,7 +89,7 @@ export const deleteUser = createAsyncThunk(
   "auth/delete",
   async (userId, thunkAPI) => {
     try {
-      await axios.delete(`http://localhost:3000/api/auth/${userId}`, {
+      await axios.delete(`http://localhost:5000/api/auth/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -110,7 +110,7 @@ export const BecomeVolunteer = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:3000/api/volunteer/create",
+        "http://localhost:5000/api/volunteer/create",
         role,
         {
           headers: {

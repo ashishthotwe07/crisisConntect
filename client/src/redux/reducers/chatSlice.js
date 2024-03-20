@@ -8,7 +8,7 @@ export const fetchChats = createAsyncThunk(
   async ({ user }) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/chats/${user}`,
+        `http://localhost:5000/api/chats/${user}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -27,7 +27,7 @@ export const createChat = createAsyncThunk(
   async ({ user, message }) => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/chats/send/${user}`,
+        `http://localhost:5000/api/chats/send/${user}`,
         { message },
         {
           headers: {
