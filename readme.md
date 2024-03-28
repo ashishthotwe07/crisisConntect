@@ -42,14 +42,8 @@ cd ../server && npm install
    - Create a `.env` file in the server directory.
    - Define the necessary environment variables such as MongoDB URI, JWT secret, email SMTP settings, etc.
 
-4. Start the development servers:
-
-```bash
-cd client && npm start
-cd ../server && npm start
 ```
 
-5. Access the application in your web browser at `http://localhost:3000`.
 
 ## License
 
